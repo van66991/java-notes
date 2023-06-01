@@ -16,6 +16,8 @@ set COMMIT_MSG="push_to_github.bat脚本自动提交 %date% %time% "
 :: 这是远程仓库的别名/全地址
 set REPO_ADDR="note"
 
+echo.
+
 echo 开始添加暂存区...
 git add .
 IF ERRORLEVEL 1 (
@@ -25,6 +27,7 @@ IF ERRORLEVEL 1 (
 )
 echo 添加暂存区成功！
 
+echo.
 echo 开始提交本地库...
 git commit -m %COMMIT_MSG%
 IF ERRORLEVEL 1 (
@@ -34,6 +37,7 @@ IF ERRORLEVEL 1 (
 )
 echo 提交本地库成功！
 
+echo.
 echo 正在将本地仓库master分支推送到GitHub...
 git push %REPO_ADDR% master
 IF ERRORLEVEL 1 (
