@@ -23,6 +23,7 @@ IF ERRORLEVEL 1 (
     pause
     exit /b
 )
+echo 添加暂存区成功！
 
 echo 开始提交本地库...
 git commit -m %COMMIT_MSG%
@@ -31,6 +32,7 @@ IF ERRORLEVEL 1 (
     pause
     exit /b
 )
+echo 提交本地库成功！
 
 echo 正在将本地仓库master分支推送到GitHub...
 git push %REPO_ADDR% master
