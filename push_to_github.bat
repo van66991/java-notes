@@ -1,22 +1,25 @@
 @echo off
 chcp 65001 > nul
-echo 正在将本地仓库推送到GitHub...
+echo push_to_github.bat 启动...
 setlocal
 
-REM 获取当前系统时间
+:: 获取当前系统时间
 set time=%TIME:~0,8%
 echo 当前时间：%time%
 
-REM 获取当前系统日期
+:: 获取当前系统日期
 set date=%DATE:~3%
 echo 当前日期：%date%
 
 set COMMIT_MSG="push_to_github.bat脚本自动提交 %date% %time% "
 
+:: 这是远程仓库的别名/全地址
+set REPO_ADDR="note"
+
 echo 开始添加暂存区...
 git add .
 IF ERRORLEVEL 1 (
-    echo 添加文件失败！请检查是否有文件需要添加。
+    echo 添加失败！请检查是否有文件需要添加。
     pause
     exit /b
 )
@@ -29,8 +32,8 @@ IF ERRORLEVEL 1 (
     exit /b
 )
 
-echo 正在将本地仓库推送到GitHub...
-git push note master
+echo 正在将本地仓库master分支推送到GitHub...
+git push %REPO_ADDR% master
 IF ERRORLEVEL 1 (
     echo 推送失败！请检查远程库是否存在，以及是否有推送权限。
     pause
