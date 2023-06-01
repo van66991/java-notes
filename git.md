@@ -951,3 +951,7 @@ remote: Compressing objects: 100% (42/42), done.
 
 
 ## 6.5 SSH免密登录
+
+
+
+6.6 配合bat批处理标本实现一键push
