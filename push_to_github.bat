@@ -8,7 +8,7 @@ set time=%TIME:~0,8%
 echo 当前时间：%time%
 
 REM 获取当前系统日期
-set date=%DATE%
+set date=%DATE:~3%
 echo 当前日期：%date%
 
 set COMMIT_MSG="push_to_github.bat脚本自动提交 %date% %time% "
