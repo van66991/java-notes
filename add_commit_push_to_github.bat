@@ -2,7 +2,7 @@
 chcp 65001 > nul
 echo 正在将本地仓库推送到GitHub...
 setlocal
-set TIMESTAMP=%DATE:~0,4%%DATE:~5,2%%DATE:~8,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
+set TIMESTAMP=%date:~0,4%%date:~5,2%%date:~8,2%%time:~0,2%%time:~3,2%%time:~6,2%
 set COMMIT_MSG="push_to_github.bat脚本自动提交 %TIMESTAMP%"
 git add .
 IF ERRORLEVEL 1 (
@@ -24,3 +24,4 @@ IF ERRORLEVEL 1 (
 )
 echo 推送完成！
 pause
+
