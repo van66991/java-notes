@@ -764,7 +764,7 @@ target
 
 
 
-## 5.2 添加暂存区
+## 5.2 添加暂存区 - git add
 
 右键点击项目选择 Git -> Add 将项目添加到暂存区。
 
@@ -774,7 +774,7 @@ target
 
 
 
-## 5.3 提交本地库
+## 5.3 提交本地库 - git commit
 
 右键点击项目选择 Git -> Commit Directory 将项目提交本地库。
 
@@ -785,6 +785,14 @@ target
 新版本：
 
 ![image-20230512011418569](https://tansihao6033.oss-cn-hangzhou.aliyuncs.com/img/20230512011421.png)
+
+
+
+## 5.4 查看日志历史 - git reflog
+
+![image-20230601174045437](./assets/image-20230601174045437.png)
+
+
 
 
 
@@ -954,4 +962,4 @@ remote: Compressing objects: 100% (42/42), done.
 
 
 
-6.6 配合bat批处理标本实现一键push
+## 6.6 配合bat批处理标本实现一键push
