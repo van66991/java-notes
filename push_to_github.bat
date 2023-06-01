@@ -2,7 +2,16 @@
 chcp 65001 > nul
 echo 正在将本地仓库推送到GitHub...
 setlocal
-set COMMIT_MSG="push_to_github.bat脚本自动提交"
+
+REM 获取当前系统时间
+set time=%TIME%
+echo 当前时间：%time%
+
+REM 获取当前系统日期
+set date=%DATE%
+echo 当前日期：%date%
+
+set COMMIT_MSG="push_to_github.bat脚本自动提交 %time% %date%"
 git add .
 IF ERRORLEVEL 1 (
     echo 添加文件失败！请检查是否有文件需要添加。
