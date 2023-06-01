@@ -5,7 +5,7 @@ setlocal
 
 REM 获取当前系统时间
 set time=%TIME%
-echo 当前时间：%time%
+echo 当前时间：%time:~0,8%
 
 REM 获取当前系统日期
 set date=%DATE%
