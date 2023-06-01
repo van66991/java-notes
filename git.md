@@ -960,6 +960,31 @@ remote: Compressing objects: 100% (42/42), done.
 
 ## 6.5 SSH免密登录
 
+### 6.5.1 获得id_rsa.pub公钥
+
+1.  进入用户的家目录 ~
+
+```
+windows的家目录是 C:/用户/${你的用户名}/
+```
+
+2.  如果有.ssh文件夹就删除
+3. （重点）运行命令生成.ssh 秘钥目录
+
+```bash
+ssh-keygen -t rsa -C 1134312725@qq.com
+```
+
+输入命令后连续点三次回车
+
+4. 复制生成的.ssh文件夹下的id_rsa.pub的全部内容，登录 GitHub，点击用户头像→Settings→SSH and GPG keys
+
+![image-20230601175323603](./assets/image-20230601175323603.png)
+
+![image-20230601175346037](./assets/image-20230601175346037.png)
+
+接下来再往远程仓库 push 东西的时候使用 SSH 连接就不需要登录了。
+
 
 
 ## 6.6 配合bat批处理标本实现一键push
