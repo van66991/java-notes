@@ -4,14 +4,14 @@ echo 正在将本地仓库推送到GitHub...
 setlocal
 
 REM 获取当前系统时间
-set time=%TIME%
-echo 当前时间：%time:~0,8%
+set time=%TIME:~0,8%
+echo 当前时间：%time%
 
 REM 获取当前系统日期
 set date=%DATE%
 echo 当前日期：%date%
 
-set COMMIT_MSG="push_to_github.bat脚本自动提交 %time% %date%"
+set COMMIT_MSG="push_to_github.bat脚本自动提交 %date% %time% "
 
 echo 开始添加暂存区...
 git add .
