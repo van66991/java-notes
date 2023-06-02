@@ -234,7 +234,7 @@
 
 说明：退出到家目录后，写命令“reboot”意为重启 ☆
 
-验证：重启后，利用ip addr（DVD版本：ipconfig好使）命令，验证系统ip是否配置成功 ☆
+验证：重启后，利用ip addr命令，验证系统ip是否配置成功 ☆
 
 ![img](https://tansihao6033.oss-cn-hangzhou.aliyuncs.com/img/202302031956990.jpg)
 
@@ -253,12 +253,6 @@ Linux：
 结论：如果ip正确，且网络通畅，说明三大步骤配置成功！☆
 
 说明：配置成功后，我们就可以使用XShell工具，连接CentOS7.9进行命令操作 ☆
-
- 
-
- 
-
- 
 
  
 
@@ -1033,3 +1027,99 @@ G - 将光标置于文件的结尾
 这将退出编辑器并放弃任何更改。
 
 这是Vi编辑器的一些基本命令。对于更高级的用法和命令，请参考Vi编辑器的文档或其他教程。
+
+
+
+## 5.3 解决windows连接不上linux虚拟机上的redis
+
+### 5.3.1 关闭linux虚拟机防火墙
+
+1. 安装iptable服务工具----先检查是否安装了
+
+- ```bash
+  iptables service iptables status
+  ```
+
+2. 安装iptables
+
+- ```bash
+  yum install -y iptables
+  ```
+
+3. 升级iptables
+
+- ```bash
+  yum update iptables
+  ```
+
+4. 安装iptables-services
+
+- ```bash
+  yum install iptables-services
+  ```
+
+5. 禁用/停止自带的firewalld服务
+
+- ```bash
+  systemctl stop firewalld
+  ```
+
+6. 查看防火墙是否关闭成功
+
+- ```bash
+  systemctl status firewalld 
+  ```
+
+有Active: inactive (dead)字样，关闭成功
+
+7. 编辑iptables防火墙，设置放开和关闭的端口等
+
+- ```bash
+  vi /etc/sysconfig/iptables
+  ```
+
+![img](./assets/cd60d49d4a5c10ca2beec13d72ea9731.png)
+
+复制–dport 22那一行，然后写需要的端口，redis的话默认6379
+（vi编辑器命令：yy复制单行 p粘贴单行）
+
+8. 重启iptables服务使配置生效
+
+- ```
+  systemctl restart iptables
+  ```
+
+9. 查看iptables运行状态
+
+- ```
+  systemctl status iptables
+  ```
+
+![查看iptables运行状态](./assets/d69fbe5642c6f975f73b75668a57823e.png)
+
+10. 设置iptables开机自启动
+
+- ```
+  systemctl enable iptables
+  ```
+
+11. 禁止firewall服务开机自启动
+
+- ```
+  systemctl disable firewalld
+  ```
+
+![禁止firewall服务开机自启动](./assets/bd5b4eef20c0a0875b158b5bbc94c88b.png)
+
+### 5.3.2 配置redis使其对外部提供服务
+
+1. 修改redis配置文件
+
+- ```
+  vi /etc/redis-mine.conf
+  ```
+
+修改为 bind 0.0.0.0; 并且 关闭保护模式：protected-mode no
+![redis配置](./assets/5c04512ac6a85f65c13a68bb8a1cad8f.png)
+
+### 5.3.3 windows测试telnet 192.168.10.250 6379

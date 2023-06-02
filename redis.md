@@ -227,7 +227,7 @@ redis-server --port 6379
 ② 启动服务器——配置文件启动
 
 ```bash
-redis-server config_file_name
+redis-server ${配置文件名}
 ```
 
 ***范例***
