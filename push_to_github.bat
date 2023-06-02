@@ -36,13 +36,21 @@ IF ERRORLEVEL 1 (
     echo 提交本地库成功！
 )
 
+:push
 echo.
 echo 正在将本地仓库master分支推送到GitHub...
 git push %REPO_ADDR% master
 IF ERRORLEVEL 1 (
     echo 推送失败！请检查远程库是否存在，以及是否有推送权限。
-    pause
-    exit /b
+    echo 是否重新推送？[Y/N]
+    set /p choice=
+    if /i "%choice%"=="Y" (
+        goto push
+    ) else (
+        echo 推送已取消！
+        pause
+        exit /b
+    )
 )
 echo 推送完成！
 pause
