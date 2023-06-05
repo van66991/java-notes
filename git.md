@@ -987,7 +987,7 @@ ssh-keygen -t rsa -C 1134312725@qq.com
 
 接下来再往远程仓库 push 东西的时候使用 SSH 连接就不需要登录了。
 
-
+注意这里使用的远程库地址不是https://开头的那个了 就是git://开头的了
 
 ## 6.6 配合bat批处理标本实现一键push
 
@@ -1055,4 +1055,16 @@ IF ERRORLEVEL 1 (
 echo 推送完成！
 pause
 ```
+
+
+
+# 7 IDEA集成Github
+
+## 7.1 设置Github账号
+
+![image-20230602132921508](./assets/image-20230602132921508.png)
+
+直接账号密码登录试试，实在不行就token登录。
+
+
 
