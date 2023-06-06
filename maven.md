@@ -426,7 +426,7 @@ IDEA新建项目的时候走的不是Settings，而是File-->New Project Setting
 mvn -T 8 clean install -DskipTests=true
 mvn -T 8 clean compile -DskipTests=true
 //-T : +线程数，充分利用多核CPU资源
-//-DskipTest=true ：跳过测试
+//-DskipTests=true ：跳过测试
 ```
 
 * 检查有没有起作用：
