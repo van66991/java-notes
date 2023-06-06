@@ -423,8 +423,8 @@ IDEA新建项目的时候走的不是Settings，而是File-->New Project Setting
 * 比较常用的（装杯）：
 
 ```bash
-mvn -T 8 clean install -DskipTest=true
-mvn -T 8 clean compile -DskipTest=true
+mvn -T 8 clean install -DskipTests=true
+mvn -T 8 clean compile -DskipTests=true
 //-T : +线程数，充分利用多核CPU资源
 //-DskipTest=true ：跳过测试
 ```
@@ -435,3 +435,12 @@ mvn -T 8 clean compile -DskipTest=true
 mvn -version
 ```
 
+* 根目录下指定模块编译
+
+```bash
+mvn clean install -am -pl ${模块路径} -DskipTests=true
+```
+
+
+
+  
