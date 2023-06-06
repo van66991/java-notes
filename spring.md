@@ -2294,13 +2294,26 @@ Spring 的 AOP 技术可以通过切入点定位到特定的连接点。
 在IOC所需依赖基础上再加入下面依赖即可：
 
 ```xml
-        <!-- spring-aspects AOP所需 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
-            <version>5.3.1</version>
-        </dependency>
+<!-- spring-aspects AOP所需 -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aspects</artifactId>
+    <version>5.3.1</version>
+</dependency>
 ```
+
+特别地：
+
+springboot项目中：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+```
+
+
 
 #### 2-5-1-2 准备被代理的目标资源
 
@@ -2543,7 +2556,7 @@ execution(public int com.tan.aop.Calculator.add(int,int))
 
 只能代表特定接口的特定方法，毫无通用性，遇到新方法就要重新写一个
 
-#### 2-5-3-1成分解释
+#### 2-5-3-1 成分解释
 
 ![image-20230315134126737](https://tansihao6033.oss-cn-hangzhou.aliyuncs.com/img/20230315134129.png)
 

@@ -215,7 +215,7 @@ redis-check-aof AOF文件修复工具
 ① 启动服务器——参数启动
 
 ```bash
-redis-server [--port port]
+redis-server --port ${port}
 ```
 
 ***范例***
