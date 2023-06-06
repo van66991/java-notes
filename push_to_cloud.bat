@@ -14,7 +14,7 @@ echo 当前日期：%date%
 set "COMMIT_MSG=push_to_github.bat脚本自动提交 %date% %time%"
 
 :: 这是远程仓库的别名/全地址
-set "REPO_ADDR=note"
+set "REPO_ADDR=note-gitee"
 
 echo.
 echo 开始添加暂存区...
