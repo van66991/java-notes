@@ -38,7 +38,7 @@ IF ERRORLEVEL 1 (
 
 :push
 echo.
-echo 正在将本地仓库master分支推送到GitHub...
+echo 正在将本地仓库master分支推送到GitHub/Gitee...
 git push %REPO_ADDR% master
 IF ERRORLEVEL 1 (
     echo 推送失败！请检查远程库是否存在，以及是否有推送权限。
