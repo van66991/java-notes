@@ -62,6 +62,8 @@ Ctrl + Alt + I 自动缩进行
 
 Ctrl + Alt + O 优化导入的类和包
 
+**Ctrl + Alt + ←** 上一次操作所在的位置（溯源时非常常用）
+
 
 
 ## Alt + Shift + 系列
