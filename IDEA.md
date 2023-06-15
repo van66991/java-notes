@@ -1,4 +1,4 @@
-# U章 IDEA快捷键
+# K章 IDEA快捷键
 
 ## Alt + 系列
 
@@ -93,6 +93,46 @@ Ctrl + Shift + F 全局查代码（Find in Files）注意 把win系统的简繁�
 以上就是个人在开发或调试中常用的快捷键了。平常使用基本够用了，再多些我也快记不住了
 
 
+
+
+
+# S章 设置
+
+## idea每次配环境都要看的设置
+
+### 文件编码设置
+
+File->Settings->Editor->File Encodings
+
+```
+Global Encoding:UTF-8
+Projectt Encoding:UTF-8
+Default encoding for properties files:UTF-8
+勾选上Transparent native-to-ascii conversion
+with NO BOM
+```
+
+### 自动导入所有包
+
+在Intellij IDEA一次只能导入单个包，没有像Eclipse快速导入包的快捷键Ctrl+Shift+O，但是Intellij IDEA下有个自动导入包的功能。在File->Settings->Editor->General->Auto Import下进行配置
+
+```
+有个选的选ALL 全勾上
+```
+
+### 配Maven
+
+File->Settings->Build,Execution,Deployment->Build Tools->Maven
+
+大部分都学过
+
+说点没注意到的
+
+```
+VM options for importer:可以设置导入的VM参数，一般这个都不需要主动改，除非项目真的导入太慢了我们再增大此参数
+Import Maven projects automatically:表示IntelliJ IDEA会实时监控项目的pom.xml文件进行项目变动设置，建议进行勾选
+Sources和Documentation:表示在Maven导入依赖包的时候是否自动下载源码和文档，默认是没有勾选的也不建议勾选，原因是这样可以加快项目从外网导入依赖包的速度，如果我们需要源码和文档的时候我们到时候再针对某个依赖包进行联网下载即可，IntelliJ IDEA 支持直接从公网下载源码和文档的
+```
 
 
 
