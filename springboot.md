@@ -369,16 +369,14 @@ classpath:/application.properties
 * 编写测试类
 
 ```java
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = SpringbootQuickStartApplication.class)
+@RunWith(SpringRunner.class)//早期版本
+@SpringBootTest(classes = ${你的启动类}.class)
 @Slf4j
 public class UserServiceTest {
-
     @Test
     public void testJunit() {
         log.info("111");
     }
-
 }
 ```
 
