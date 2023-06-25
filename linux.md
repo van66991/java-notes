@@ -1189,3 +1189,132 @@ Hello|World
 
 
 
+## 5.6 Oracle服务器的启停
+
+### 5.6.1 关闭服务
+
+前提：在%ORACLE_HOME%\bin下
+
+停止Oracle监听服务
+
+```bash
+lsnrctl stop
+```
+
+以系统管理员登陆
+
+```bash
+sqlplus / as sysdba
+```
+
+```
+SQL>shutdown immediate
+SQL>exit
+```
+
+### 5.6.2 启动服务
+
+前提：在%ORACLE_HOME%\bin下
+
+启动Oracle监听服务
+
+```bash
+lsnrctl start
+```
+
+以系统管理员登录
+
+```bash
+sqlplus / as sysdba
+```
+
+```
+SQL>startup
+```
+
+
+
+### 5.6.3 验证
+
+windows cmd
+
+```bash
+telnet ${oracle服务器地址} 1521
+```
+
+```bash
+telnet 10.10.10.30 1521
+```
+
+
+
+## 5.7 SVN服务器的重启
+
+### 5.7.1 找到svn和svnserve所在的bin目录
+
+```bash
+find / -name svn
+```
+
+stdout：
+
+```bash
+[root@SVN-Server ~]# find / -name svn
+/home/svn
+/home/svn/apache/bin/svn
+/var/spool/mail/svn
+```
+
+==/home/svn/apache/bin/svn==就是要找的
+
+### 5.7.2 跳转到bin键入以下命令
+
+```bash
+./apachectl start
+./svnserve -d -r ${svn仓库地址}
+```
+
+### 5.7.3 小技巧：杀进程
+
+查看进程：
+
+```bash
+ps -ef | grep ${查询内容}
+eg：
+ps -ef | grep svn
+```
+
+stdout:
+
+```bash
+[root@SVN-Server svn]# ps -ef | grep svn
+root     10305     1  0 16:08 ?        00:00:00 /home/svn/apache/bin/svnserve -d -r /home/svn/svn_2019/quod --listen-port=8086
+root     10601 10305  0 16:14 ?        00:00:00 /home/svn/apache/bin/svnserve -d -r /home/svn/svn_2019/quod --listen-port=8086
+root     10616  8137  0 16:14 pts/0    00:00:00 grep --color=auto svn
+```
+
+10305 10601 10616就是进程号
+
+杀死进程：
+
+```bash
+kill -9 ${进程号} [${进程号}]
+eg: kill -9 10305
+```
+
+验证：再次查看进程即可
+
+
+
+## 5.8 看暴露的端口
+
+`netstat -ntlp` 是一个常用的 Linux 命令，用于列出当前运行中的网络连接和相应的进程信息。具体来说，这个命令会列出所有的 TCP 连接，包括连接的本地地址和端口、远程地址和端口，以及与每个连接关联的进程 ID 和进程名称。
+
+命令中的选项说明如下：
+
+- `-n`：禁用对地址和端口的名称解析，这将加快命令的执行速度。
+- `-t`：只显示 TCP 连接。
+- `-l`：仅显示正在监听的连接，即服务器正在监听的端口。
+- `-p`：显示与每个连接关联的进程信息。
+
+使用 `netstat -ntlp` 命令可以方便地查看当前正在运行的 TCP 服务，以及它们所使用的端口和相应的进程信息。这对于调试网络问题、查找占用端口的进程以及监视系统的网络活动都非常有用。
