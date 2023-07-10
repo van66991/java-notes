@@ -149,3 +149,7 @@ sudo docker stop ${CONTAINER-NAME}
 touch ~/.easyconn
 ```
 
+```
+ssh -L 1080:127.0.0.1:1080 -fN -D 1080 root@121.43.98.21
+```
+
