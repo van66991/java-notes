@@ -46,7 +46,7 @@
 
 ![image-20230212210738442](https://tansihao6033.oss-cn-hangzhou.aliyuncs.com/img/20230212210743.png)
 
-# 2 MySQL数据库的介绍与安装
+# 2 MySQL数据库的安装与配置
 
 ## 2-1 MySQL数据库介绍
 
@@ -56,7 +56,7 @@
 
 * 所属于 Oracle 公司
 
-## 2-2 MySQL数据库的安装与配置
+## 2-2 MySQL数据库的安装与配置(Win本地)
 
 ### 2-2-1 下载解压
 
@@ -152,6 +152,274 @@ mysql> set password for 用户名@localhost = password(‘新密码’);
 ```
 
 ![image-20230212220730350](https://tansihao6033.oss-cn-hangzhou.aliyuncs.com/img/20230212220733.png)
+
+## 2-3 MySQL数据库的安装与配置(Linux服务器)
+
+### 2-3-1 下载解压
+
+#### 2-3-1-1 下载
+
+https://downloads.mysql.com/archives/community/
+
+下载Generic版本mysql-5.7.40-linux-glibc2.12-x86_64.tar.gz。
+
+#### 2-3-1-2 检测系统是否自带安装 MySQL
+
+```bash
+rpm -qa | grep mysql
+若结果显示类似“mysql-libs-5.1.52-1.el6_0.1.x86_64”，则可以选择进行卸载。
+# 普通删除模式
+rpm -e mysql-libs-5.1.52-1.el6_0.1.x86_64
+# 如果使用普通删除模式命令删除时，提示有依赖的其它文件，则用强力删除模式命令对其进行强力删除
+rpm -e --nodeps mysql-libs-5.1.52-1.el6_0.1.x86_64
+```
+
+#### 2-3-1-3 检查是否存在mariadb数据库
+
+```bash
+rpm -qa | grep mariadb
+若结果显示类似“mariadb-libs-5.5.56-2.el7.x86_64”，则可以选择进行卸载。
+rpm -e --nodeps mariadb-libs-5.5.56-2.el7.x86_64
+```
+
+#### 2-3-1-4 上传压缩包
+
+用FTP工具将mysql的targz压缩包mysql-5.7.40-linux-glibc2.12-x86_64.tar.gz上传到服务器的/usr/local目录下
+
+#### 2-3-1-5 解压 重命名
+
+```bash
+# 解压文件命令：
+cd /usr/local
+tar -zxvf mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz
+# 重命名命令：
+mv mysql-5.7.40-linux-glibc2.12-x86_64 mysql-5.7.40
+```
+
+### 2-3-2 添加mysql组和mysql用户
+
+#### 2-3-2-1
+
+```bash
+#检查mysql组和用户是否存在。命令：
+cat /etc/group | grep mysql
+#若结果显示类似“mysql:x:490:”，则说明mysql组存在，无需再添加。
+cat /etc/passwd | grep mysql
+#若结果显示类似“mysql:x:496:490::/home/mysql:/bin/bash”，则说明mysql用户存在，无需再添加。
+#若结果显示mysql组和用户不存在，则执行添加命令。命令：
+groupadd mysql
+useradd -r -g mysql mysql
+#useradd -r参数表示mysql用户是系统用户，不可用于登录系统
+```
+
+### 2-3-3 安装
+
+#### 2-3-3-1 创建data目录
+
+```bash
+mkdir -p /usr/local/mysql-5.7.40/data
+```
+
+
+
+#### 2-3-3-2 将/usr/local/mysql-5.7.40的所有者及所属组改为mysql，并赋予权限。
+
+```bash
+chown -R mysql:mysql /usr/local/mysql-5.7.40
+chmod -R 755 /usr/local/mysql-5.7.40
+chmod -R 755 /usr/local/mysql-5.7.40/data
+```
+
+#### 2-3-3-3 在/usr/local/mysql-5.7.40/support-files目录下创建my_default.cnf
+
+my_default.cnf文件中写入下面的代码：
+
+```ini
+[mysqld]
+sql_mode = NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
+basedir = /usr/local/mysql-5.7.40
+datadir = /usr/local/mysql-5.7.40/data
+port = 3306
+socket = /tmp/mysql.sock
+character-set-server = utf8
+log-error = /usr/local/mysql-5.7.40/data/mysqld.log
+pid-file = /usr/local/mysql-5.7.40/data/mysqld.pid
+```
+
+#### 2-3-3-4 把my_default.cnf文件拷贝到/etc中并命名为mysql.cnf
+
+```bash
+cd /usr/local/mysql-5.7.40/support-files
+cp my_default.cnf /etc/mysql.cnf
+```
+
+#### 2-3-3-5 初始化数据库
+
+```bash
+rpm -qa | grep libaio
+# 如果没有
+yum install libaio-devel.x86_64
+
+cd /usr/local/mysql-5.7.40/bin
+
+./mysqld --initialize --user=mysql --basedir=/usr/local/mysql-5.7.40/ --datadir=/usr/local/mysql-5.7.40/data/
+```
+
+#### 2-3-3-6 从数据库初始化输出结果的最后一行中得到临时密码
+
+2022-02-21T07:01:34.216723Z 1 [Note] A temporary password is generated for root@localhost: *7%(LDZ3gN>I
+
+*7%(LDZ3gN>I就是临时密码
+
+#### 2-3-3-7 进入/usr/local/mysql-5.7.40/support-files，启动mysql服务
+
+```bash
+cd /usr/local/mysql-5.7.40/support-files
+
+./mysql.server start
+
+# 若结果显示“Starting MySQLCouldn't find MySQL server (/usr/local/mysql/[FAILED]ld_safe)”，则需要对mysql.server文件进行修改。把“/usr/local/mysql”修改为“/usr/local/mysql-5.7.40”，“my.cnf”修改为“mysql.cnf”，然后再次启动mysql服务，结果显示“OK”,就说明成功了。
+# 这是作者的问题。mysql.server中默认去读/etc/my.cnf文件，而教程中的名字改为了my_default.cnf和mysql.cnf 最好不要通过改mysql.server文件的方式来解决这个问题。但是是初次学习，先这样用着。
+```
+
+#### 2-3-3-8 把启动脚本放到开机初始化目录
+
+```bash
+cd /usr/local/mysql-5.7.40/support-files
+cp mysql.server /etc/init.d/mysql
+
+# 赋予可执行权限
+chmod +x /etc/init.d/mysql
+
+# 添加服务
+chkconfig --add mysql
+
+#这一步后就能够通过
+service mysql start
+service mysql restart
+service mysql status
+#来启停mysql服务了 类似于windows系统上的net stop mysql
+```
+
+#### 2-3-3-9 添加环境变量
+
+```bash
+# 在文件/etc/profile中添加下面的代码：
+export PATH=$PATH:/usr/local/mysql-5.7.40/bin
+
+# 使profile文件生效
+source /etc/profile
+```
+
+
+
+### 2-3-4 登录修改密码
+
+#### 2-3-4-1 登录mysql，密码为初始密码
+
+```bash
+mysql -u root -p
+#输入2-3-3-6获得的临时密码：“*7%(LDZ3gN>I”，若结果显示“mysql> ”，则说明数据库登录成功了；
+```
+
+#### 2-3-4-2 重置数据库root账号密码
+
+执行该命令前必须开启mysql服务
+
+```bash
+cd /usr/local/mysql-5.7.40/bin
+./mysql_secure_installation
+```
+
+```
+若结果显示“Enter password for user root:”，则输入当前root账号的临时密码，直接回车即可。
+“New password:”，输入密码。
+“Re-enter new password:”，重复输入密码。
+“Would you like to setup VALIDATE PASSWORD plugin?[Y/n]:”，输入y回车。
+“Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG:”，输入0回车。（注意：“STRONG”的密码需要有字母、数字和特殊字符）
+“Change the password for root ? [Y/n]:”，输入n回车。
+“Do you wish to continue with the password provided?[Y/n]:”，输入y回车。
+“Remove anonymous users? [Y/n]”，输入y回车。
+“Disallow root login remotely? [Y/n]”，输入y回车。
+“Remove test database and access to it? [Y/n]”，输入y回车。
+“Reload privilege tables now? [Y/n]”，输入y回车。
+```
+
+
+
+### 2-3-5 允许远程访问
+
+#### 2-3-5-1 修改user表，分配权限
+
+在mysqlSHELL模式下
+
+```bash
+mysql> use mysql;
+mysql> update user set Grant_priv='Y',Super_priv='Y',host='%' where user = 'root';
+# 可以去Navicat里把user=root的这一行所有_priv结尾的字段都改成Y
+mysql> grant all privileges on *.* to 'root'@'%' identified by '${数据库密码}' with grant option;
+mysql> flush privileges;
+```
+
+#### 2-3-5-2 开火墙
+
+```bash
+# 先看3306端口是否暴露
+netstat -ntlp
+# 如果暴露了，继续开火墙，如果没有，检查mysql服务是否开启
+
+# 检查火墙中是否允许3306端口通过
+firewall-cmd --state
+firewall-cmd --list-all
+# 如果没有3306/tcp 则添加
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+```
+
+另外补充一些火墙命令十分常用
+
+```bash
+# 查看火墙状态
+systemctl status firewalld
+firewall-cmd --state
+# 关闭火墙
+systemctl stop firewalld
+# 开启火墙
+systemctl start firewalld
+# 移除指定端口
+firewall-cmd --zone=public --remove-port=8080/tcp --permanent
+# 刷新火墙
+firewall-cmd --reload
+```
+
+
+
+#### 2-3-5-3 修改云服务器厂商安全规则
+
+以阿里云ECS为例
+
+![image-20230713142257772](./assets/image-20230713142257772.png)
+
+
+
+![image-20230713142354685](./assets/image-20230713142354685.png)
+
+
+
+
+
+#### 2-3-5-4 telnet测试连接并用Navicat远程连接
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 3 SQL语句 
 
